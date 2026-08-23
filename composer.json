@@ -1,0 +1,33 @@
+{
+    "name": "brocode/module-graphql-explorer",
+    "description": "Embedded GraphiQL for the Magento 2 Adminhtml, with a store-view switcher that drives the GraphQL Store header.",
+    "type": "magento2-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benjamin Rosenberger",
+            "email": "bensch.rosenberger@gmail.com"
+        }
+    ],
+    "funding": [
+        {
+            "type": "By me a coffee",
+            "url": "https://www.buymeacoffee.com/brosenberger"
+        }
+    ],
+    "require": {
+        "php": "~8.1.0||~8.2.0||~8.3.0||~8.4.0",
+        "magento/framework": "*",
+        "magento/module-backend": "*",
+        "magento/module-store": "*",
+        "magento/module-graph-ql": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "BroCode\\GraphQlExplorer\\": ""
+        }
+    }
+}

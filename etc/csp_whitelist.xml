@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+    GraphiQL injects style tags at runtime and the editor uses blob-backed
+    workers. Everything else is served from this module's own view/web
+    directory, so no external host is whitelisted here - deliberately.
+-->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="style-src">
+            <values>
+                <value id="self" type="host">'self'</value>
+            </values>
+        </policy>
+        <policy id="worker-src">
+            <values>
+                <value id="self" type="host">'self'</value>
+                <value id="blob" type="host">blob:</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="self" type="host">'self'</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

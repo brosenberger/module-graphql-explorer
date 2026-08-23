@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="BroCode_GraphQlExplorer::explorer"
+             title="GraphQL Explorer"
+             translate="title"
+             module="BroCode_GraphQlExplorer"
+             sortOrder="90"
+             parent="Magento_Backend::system_other_settings"
+             action="brocode_graphqlexplorer/explorer/index"
+             resource="BroCode_GraphQlExplorer::explorer"/>
+    </menu>
+</config>

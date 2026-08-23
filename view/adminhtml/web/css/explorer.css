@@ -1,0 +1,44 @@
+.brocode-gqle__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 12px 0 16px;
+}
+
+.brocode-gqle__label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.brocode-gqle__select,
+.brocode-gqle__input {
+    min-height: 32px;
+}
+
+.brocode-gqle__input {
+    flex: 1 1 320px;
+    min-width: 220px;
+}
+
+.brocode-gqle__hint {
+    flex: 1 1 100%;
+    color: #666;
+    font-size: 12px;
+}
+
+/* GraphiQL needs an explicit height; it fills its container and the admin
+   content area has none of its own. */
+.brocode-gqle__root {
+    height: 78vh;
+    min-height: 520px;
+    border: 1px solid #d6d6d6;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.brocode-gqle__error {
+    padding: 16px;
+    color: #b30000;
+    font-family: monospace;
+}

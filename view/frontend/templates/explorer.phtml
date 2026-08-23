@@ -8,8 +8,6 @@ $config = $block->getData('explorer_config');
 $stores = $config->isStoreSwitchAllowed() ? $config->getStoreOptions() : [];
 ?>
 <div class="brocode-gqle">
-    <h1 class="brocode-gqle__title"><?= $escaper->escapeHtml(__('GraphQL Explorer')) ?></h1>
-
     <div class="brocode-gqle__config">
 
         <!-- Column 1: where the queries go. -->

@@ -10,6 +10,8 @@ behind an ACL-protected admin page, and makes switching store views one dropdown
 
 ![GraphQL Explorer in the Magento admin](docs/screenshot.png)
 
+*System → Tools → GraphQL Explorer. Magento's own store switcher drives the `Store` header; the endpoint below it follows the selection.*
+
 ## What it does
 
 - **Full GraphiQL 3** — schema-aware autocompletion (Ctrl-Space), live docs pane,
@@ -99,6 +101,20 @@ the right one. Check it yourself in the explorer:
 ```graphql
 { __type(name: "Mutation") { fields { name description } } }
 ```
+
+## Screenshots
+
+**Customer tokens, generated inline**
+
+![The customer token area with an inline sign-in form and a help panel showing the generateCustomerToken mutation](docs/screenshot-token.png)
+
+The `?` beside *Request token* reveals the exact mutation, copyable, for running it from any HTTP client. One click on the ✕ clears the token and drops back to guest queries.
+
+**The optional public route**
+
+![The public explorer at /graphql-explorer rendered in the Luma theme](docs/screenshot-public.png)
+
+`/graphql-explorer`, for integrators who need the schema without an admin account. Disabled by default, Basic Auth on by default, store switching off by default.
 
 ## Requirements
 

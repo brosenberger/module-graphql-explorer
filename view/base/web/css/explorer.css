@@ -74,9 +74,6 @@
     cursor: text;
 }
 
-.brocode-gqle__title {
-    margin-bottom: 12px;
-}
 
 /* Message row sits full width under the token controls, so an error is not
    squeezed onto the end of an input row. */

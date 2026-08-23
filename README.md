@@ -14,15 +14,27 @@ behind an ACL-protected admin page, and makes switching store views one dropdown
 
 - **Full GraphiQL 3** — schema-aware autocompletion (Ctrl-Space), live docs pane,
   query history, prettify, variables editor.
-- **Store-view switcher** — sets the `Store` request header, which is how Magento
-  selects a store view for GraphQL. Changing it re-runs the current query, so the
-  same query can be compared across views without editing anything.
-- **Optional customer token** — paste a bearer token to query as a customer.
-- **ACL-protected** — `BroCode_GraphQlExplorer::explorer`, under
-  *System → Tools*.
+- **Store-view switcher** — Adminhtml uses Magento's own switcher, the same block
+  the dashboard uses. It sets the `Store` request header, which is how Magento
+  selects a store view for GraphQL.
+- **Per-store endpoint**, shown read-only with a copy button. Store views can sit
+  on different base URLs, so the endpoint follows the switcher — querying view B
+  through view A's host returns view A's data whatever the header says.
+- **Customer token with inline generation** — paste one, or expand *Sign in as a
+  customer* and have `generateCustomerToken` run for you. A `?` reveals the exact
+  mutation, copyable, for running it elsewhere. One click clears the token and
+  drops back to guest queries.
+- **A default query worth running** — `products()`, which needs no authentication
+  and is store-sensitive, so switching views visibly changes the result.
+- **Native Magento styling** — `admin__control-text` and `action-*` in Adminhtml,
+  `input-text` and `action` on the storefront, and errors rendered with Magento's
+  own `message message-error` markup.
+- **ACL-protected** — `BroCode_GraphQlExplorer::explorer`, under *System → Tools*.
+- **Optional public route** for integrators at `/graphql-explorer`, off by
+  default, with configurable Basic Auth. See below.
 - **No CDN, no build step** — React and GraphiQL are vendored UMD builds served
-  from the module's own `view/adminhtml/web`. Works offline and hands no third
-  party a request from your Adminhtml.
+  from the module's own `view/base/web`. Works offline and hands no third party a
+  request from your Adminhtml.
 
 ## Install
 

@@ -22,6 +22,7 @@
     font-weight: 600;
     white-space: nowrap;
     flex: 0 0 auto;
+    align-self: center;
 }
 
 /* GraphiQL needs an explicit height; it fills its container and the admin
@@ -180,7 +181,7 @@
 .brocode-gqle__row {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: stretch;
     gap: 6px 8px;
     width: 100%;
     margin-bottom: 6px;
@@ -201,15 +202,25 @@
     line-height: 1.4;
 }
 
-/* Icon-only buttons: square, so they sit flush with the field beside them. */
+/* Icon-only buttons sit flush with the field beside them.
+
+   align-self: stretch rather than a hardcoded height: zeroing the padding to
+   get a square button also removes the vertical padding that gives Magento's
+   controls their height, so the button ends up shorter than the input next to
+   it. Stretching makes it match whatever the row's tallest control is, which
+   keeps it correct in Adminhtml and on the storefront without either theme's
+   measurements being baked in here. */
 .brocode-gqle__icon-btn {
     flex: 0 0 auto;
+    align-self: stretch;
+    box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 34px;
     min-width: 34px;
     padding: 0;
+    line-height: 1;
 }
 
 .brocode-gqle__icon-btn svg {

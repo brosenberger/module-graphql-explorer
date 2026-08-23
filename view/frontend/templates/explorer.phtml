@@ -1,27 +1,44 @@
 <?php
 /**
- * @var \Magento\Backend\Block\Template $block
+ * @var \Magento\Framework\View\Element\Template $block
  * @var \Magento\Framework\Escaper $escaper
  */
 /** @var \BroCode\GraphQlExplorer\ViewModel\ExplorerConfig $config */
 $config = $block->getData('explorer_config');
+$stores = $config->isStoreSwitchAllowed() ? $config->getStoreOptions() : [];
 ?>
 <div class="brocode-gqle">
+    <h1 class="brocode-gqle__title"><?= $escaper->escapeHtml(__('GraphQL Explorer')) ?></h1>
+
     <div class="brocode-gqle__config">
 
         <!-- Column 1: where the queries go. -->
         <div class="brocode-gqle__col">
+        <?php if ($stores): ?>
+            <div class="brocode-gqle__row">
+                <span class="brocode-gqle__label"><?= $escaper->escapeHtml(__('Store view')) ?></span>
+                <select id="brocode-gqle-store" class="select brocode-gqle__select">
+                    <?php foreach ($stores as $store): ?>
+                        <option value="<?= $escaper->escapeHtmlAttr($store['code']) ?>"
+                            <?= $store['code'] === $config->getCurrentStoreCode() ? 'selected="selected"' : '' ?>>
+                            <?= $escaper->escapeHtml($store['label']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        <?php endif; ?>
+
             <div class="brocode-gqle__row">
                 <span class="brocode-gqle__label"><?= $escaper->escapeHtml(__('Endpoint')) ?></span>
                 <input type="text"
                        id="brocode-gqle-endpoint"
-                       class="admin__control-text brocode-gqle__endpoint"
+                       class="input-text brocode-gqle__endpoint"
                        readonly="readonly"
                        aria-readonly="true"
                        value="<?= $escaper->escapeHtmlAttr($config->getCurrentEndpoint()) ?>"/>
                 <button type="button"
                         id="brocode-gqle-endpoint-copy"
-                        class="action-default brocode-gqle__icon-btn"
+                        class="action secondary brocode-gqle__icon-btn"
                         title="<?= $escaper->escapeHtmlAttr(__('Copy endpoint URL')) ?>"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Copy endpoint URL')) ?>">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
@@ -46,13 +63,13 @@ $config = $block->getData('explorer_config');
                 <span class="brocode-gqle__label"><?= $escaper->escapeHtml(__('Customer token')) ?></span>
                 <input type="text"
                        id="brocode-gqle-token"
-                       class="admin__control-text brocode-gqle__input"
+                       class="input-text brocode-gqle__input"
                        autocomplete="off"
                        spellcheck="false"
                        placeholder="<?= $escaper->escapeHtmlAttr(__('Empty = query as guest')) ?>"/>
                 <button type="button"
                         id="brocode-gqle-token-clear"
-                        class="action-default brocode-gqle__icon-btn brocode-gqle__clear"
+                        class="action secondary brocode-gqle__icon-btn brocode-gqle__clear"
                         title="<?= $escaper->escapeHtmlAttr(__('Clear token and query as guest')) ?>"
                         aria-label="<?= $escaper->escapeHtmlAttr(__('Clear token and query as guest')) ?>">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
@@ -77,19 +94,19 @@ $config = $block->getData('explorer_config');
 
                 <div class="brocode-gqle__row">
                     <input type="email" id="brocode-gqle-email"
-                           class="admin__control-text brocode-gqle__input"
+                           class="input-text brocode-gqle__input"
                            autocomplete="off"
                            placeholder="<?= $escaper->escapeHtmlAttr(__('Customer email')) ?>"/>
                     <input type="password" id="brocode-gqle-password"
-                           class="admin__control-text brocode-gqle__input"
+                           class="input-text brocode-gqle__input"
                            autocomplete="new-password"
                            placeholder="<?= $escaper->escapeHtmlAttr(__('Customer password')) ?>"/>
-                    <button type="button" id="brocode-gqle-token-get" class="action-primary">
+                    <button type="button" id="brocode-gqle-token-get" class="action primary">
                         <?= $escaper->escapeHtml(__('Request token')) ?>
                     </button>
                     <button type="button"
                             id="brocode-gqle-token-help"
-                            class="action-default brocode-gqle__icon-btn brocode-gqle__help"
+                            class="action secondary brocode-gqle__icon-btn brocode-gqle__help"
                             aria-expanded="false"
                             aria-controls="brocode-gqle-token-mutation"
                             title="<?= $escaper->escapeHtmlAttr(__('Show the mutation this runs')) ?>"
@@ -118,7 +135,7 @@ $config = $block->getData('explorer_config');
     token
   }
 }</code></pre>
-                    <button type="button" id="brocode-gqle-token-mutation-copy" class="action-default">
+                    <button type="button" id="brocode-gqle-token-mutation-copy" class="action secondary">
                         <?= $escaper->escapeHtml(__('Copy mutation')) ?>
                     </button>
                 </div>
@@ -130,7 +147,7 @@ $config = $block->getData('explorer_config');
 
     <div id="brocode-gqle-root"
          class="brocode-gqle__root"
-         data-gqle-config="<?= $escaper->escapeHtmlAttr($config->getJsonConfig(true)) ?>"></div>
+         data-gqle-config="<?= $escaper->escapeHtmlAttr($config->getJsonConfig()) ?>"></div>
 </div>
 
 <script type="text/x-magento-init">

@@ -5,11 +5,11 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::system">
-                    <resource id="Magento_Backend::system_other_settings">
+                    <resource id="Magento_Backend::tools">
                         <resource id="BroCode_GraphQlExplorer::explorer"
                                   title="GraphQL Explorer"
                                   translate="title"
-                                  sortOrder="90"/>
+                                  sortOrder="40"/>
                     </resource>
                 </resource>
             </resource>

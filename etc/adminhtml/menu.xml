@@ -6,8 +6,8 @@
              title="GraphQL Explorer"
              translate="title"
              module="BroCode_GraphQlExplorer"
-             sortOrder="90"
-             parent="Magento_Backend::system_other_settings"
+             sortOrder="40"
+             parent="Magento_Backend::system_tools"
              action="brocode_graphqlexplorer/explorer/index"
              resource="BroCode_GraphQlExplorer::explorer"/>
     </menu>

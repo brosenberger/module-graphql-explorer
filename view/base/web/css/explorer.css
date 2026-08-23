@@ -1,0 +1,228 @@
+.brocode-gqle__label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* flex-basis 0 so the field yields space to the buttons beside it rather than
+   pushing them out of the column. */
+.brocode-gqle__input {
+    flex: 1 1 0;
+    min-width: 60px;
+}
+
+.brocode-gqle__hint {
+    flex: 1 1 100%;
+    color: #666;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+/* Labels stay on one line so the controls line up across both columns. */
+.brocode-gqle__label {
+    font-weight: 600;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+/* GraphiQL needs an explicit height; it fills its container and the admin
+   content area has none of its own. */
+.brocode-gqle__root {
+    height: 78vh;
+    min-height: 520px;
+    border: 1px solid #d6d6d6;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.brocode-gqle__error {
+    padding: 16px;
+    color: #b30000;
+    font-family: monospace;
+}
+
+/* Two columns: endpoint on the left, customer auth on the right. Collapses to
+   one column on narrow viewports rather than squeezing both. */
+.brocode-gqle__config {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px 24px;
+    align-items: start;
+    padding: 8px 0 12px;
+}
+
+@media (max-width: 1100px) {
+    .brocode-gqle__config {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.brocode-gqle__col {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    min-width: 0;
+}
+
+.brocode-gqle__endpoint {
+    flex: 1 1 0;
+    min-width: 60px;
+    font-family: monospace;
+    background: #f5f5f5;
+    color: #333;
+    cursor: text;
+}
+
+.brocode-gqle__title {
+    margin-bottom: 12px;
+}
+
+/* Message row sits full width under the token controls, so an error is not
+   squeezed onto the end of an input row. */
+.brocode-gqle__messages {
+    flex: 1 1 100%;
+    width: 100%;
+    margin: 6px 0 2px;
+}
+
+.brocode-gqle__messages:empty {
+    display: none;
+    margin: 0;
+}
+
+/* The frontend theme styles .message itself; Adminhtml needs a nudge so the
+   message does not inherit the page-level message spacing. */
+.brocode-gqle__messages .message {
+    margin: 0;
+}
+
+/* Icon-only copy button, sitting flush against the endpoint field. */
+/* Brief confirmation, so the click is not silent. */
+.brocode-gqle__copy--done {
+    background: #d6f0d6;
+    border-color: #5aa15a;
+    color: #1d631d;
+}
+
+.brocode-gqle__copy-icon {
+    pointer-events: none;
+}
+
+/* Native <details> disclosure: obviously an expander, so there is exactly one
+   button in this area and no ambiguity about which one acts. */
+.brocode-gqle__tokengen {
+    flex: 1 1 100%;
+    width: 100%;
+}
+
+.brocode-gqle__summary {
+    cursor: pointer;
+    display: inline-block;
+    padding: 4px 0;
+    color: #007bdb;
+    user-select: none;
+}
+
+.brocode-gqle__summary:hover {
+    text-decoration: underline;
+}
+
+.brocode-gqle__tokengen[open] .brocode-gqle__summary {
+    margin-bottom: 4px;
+}
+
+/* The clear button reuses the copy button's shape but reads as a reset. */
+.brocode-gqle__clear:hover {
+    background: #f7e3e3;
+    border-color: #b30000;
+    color: #b30000;
+}
+
+/* The mutation snippet revealed by the "?" beside Request token. */
+.brocode-gqle__snippet {
+    flex: 1 1 100%;
+    width: 100%;
+    margin: 8px 0 4px;
+    padding: 10px 12px;
+    border: 1px solid #d6d6d6;
+    border-radius: 3px;
+    background: #fafafa;
+}
+
+.brocode-gqle__code {
+    margin: 6px 0 8px;
+    padding: 10px;
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid #e3e3e3;
+    border-radius: 2px;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.45;
+    white-space: pre;
+}
+
+.brocode-gqle__snippet-note {
+    margin: 0;
+    font-size: 12px;
+    color: #555;
+}
+
+.brocode-gqle__help:hover {
+    background: #e3f0fa;
+    border-color: #007bdb;
+    color: #007bdb;
+}
+
+/* Layout only. Controls themselves use Magento's own classes
+   (admin__control-text / action-default in Adminhtml, input-text / action on
+   the storefront) so they inherit the platform look instead of fighting it. */
+.brocode-gqle__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.brocode-gqle__row > .brocode-gqle__endpoint,
+.brocode-gqle__row > .brocode-gqle__input {
+    flex: 1 1 0;
+    min-width: 60px;
+}
+
+/* Explanatory text always gets its own row under the controls it describes. */
+.brocode-gqle__note {
+    width: 100%;
+    margin: 0 0 10px;
+    color: #666;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Icon-only buttons: square, so they sit flush with the field beside them. */
+.brocode-gqle__icon-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    min-width: 34px;
+    padding: 0;
+}
+
+.brocode-gqle__icon-btn svg {
+    pointer-events: none;
+}
+
+.brocode-gqle__copy--done {
+    background: #d6f0d6 !important;
+    border-color: #5aa15a !important;
+    color: #1d631d !important;
+}
+
+.brocode-gqle__endpoint[readonly] {
+    background: #f5f5f5;
+    font-family: monospace;
+}

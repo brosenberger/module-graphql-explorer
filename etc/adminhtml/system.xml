@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="brocode_graphqlexplorer" translate="label" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>GraphQL Explorer</label>
+            <tab>service</tab>
+            <resource>BroCode_GraphQlExplorer::explorer</resource>
+            <group id="frontend" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Public Explorer</label>
+                <comment><![CDATA[The Adminhtml explorer under <b>System &gt; Tools</b> is always available to authorised admins and is not affected by these settings. This group controls the <i>public</i> route at <code>/graphql-explorer</code>, intended for integrators who need the schema without an admin account.]]></comment>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Public Explorer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[Off by default. When off, <code>/graphql-explorer</code> returns 404 rather than 403, so the route does not advertise itself.]]></comment>
+                </field>
+                <field id="basic_auth_enabled" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Require Basic Authentication</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends><field id="enabled">1</field></depends>
+                    <comment><![CDATA[Strongly recommended. Basic Auth sends credentials reversibly encoded, so it is only meaningful over HTTPS.]]></comment>
+                </field>
+                <field id="basic_auth_user" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Basic Auth User</label>
+                    <depends><field id="enabled">1</field><field id="basic_auth_enabled">1</field></depends>
+                </field>
+                <field id="basic_auth_password" translate="label comment" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Basic Auth Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends><field id="enabled">1</field><field id="basic_auth_enabled">1</field></depends>
+                    <comment>Stored encrypted. Leave blank to keep the current value.</comment>
+                </field>
+                <field id="allow_store_switch" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Allow Store Switching</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends><field id="enabled">1</field></depends>
+                    <comment><![CDATA[Off by default. When on, the public page lists every active store view so an integrator can switch. That enumerates your store codes to whoever can reach the page.]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

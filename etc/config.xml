@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+    Everything ships off. A GraphQL IDE on a public route is a deliberate act,
+    never something a module turns on for you.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <brocode_graphqlexplorer>
+            <frontend>
+                <enabled>0</enabled>
+                <basic_auth_enabled>1</basic_auth_enabled>
+                <allow_store_switch>0</allow_store_switch>
+            </frontend>
+        </brocode_graphqlexplorer>
+    </default>
+</config>

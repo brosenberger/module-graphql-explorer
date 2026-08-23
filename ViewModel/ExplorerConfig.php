@@ -29,6 +29,8 @@ declare(strict_types=1);
 
 namespace BroCode\GraphQlExplorer\ViewModel;
 
+use BroCode\GraphQlExplorer\Model\Config;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
@@ -36,10 +38,10 @@ use Magento\Store\Api\StoreRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Supplies the Adminhtml template with everything GraphiQL needs, as one JSON blob.
+ * Supplies both the Adminhtml and the public template with one JSON blob.
  *
- * Kept out of the template so the phtml stays free of PHP logic and free of
- * inline JavaScript, which the CSP in a hardened Adminhtml would block anyway.
+ * Kept out of the templates so they carry no PHP logic and no inline
+ * JavaScript, which a hardened CSP would block anyway.
  */
 class ExplorerConfig implements ArgumentInterface
 {
@@ -54,50 +56,40 @@ class ExplorerConfig implements ArgumentInterface
     private $storeManager;
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var \Magento\Framework\App\RequestInterface
      */
-    private $url;
+    private $request;
 
     /**
      * @var \Magento\Framework\Serialize\Serializer\Json
      */
     private $json;
 
+    /**
+     * @var \BroCode\GraphQlExplorer\Model\Config
+     */
+    private $config;
+
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         StoreManagerInterface $storeManager,
-        UrlInterface $url,
-        Json $json
+        RequestInterface $request,
+        Json $json,
+        Config $config
     ) {
         $this->storeRepository = $storeRepository;
         $this->storeManager = $storeManager;
-        $this->url = $url;
+        $this->request = $request;
         $this->json = $json;
+        $this->config = $config;
     }
 
     /**
-     * Absolute URL of the GraphQL endpoint.
+     * Every active store view, each with its own GraphQL endpoint.
      *
-     * Built from the default store's base URL rather than the Adminhtml URL:
-     * the admin may live on a separate domain, and /graphql does not exist there.
-     *
-     * @return string
-     */
-    public function getEndpointUrl(): string
-    {
-        $base = $this->storeManager->getStore($this->getDefaultStoreCode())
-            ->getBaseUrl(UrlInterface::URL_TYPE_WEB);
-
-        return rtrim($base, '/') . '/graphql';
-    }
-
-    /**
-     * Every active store view, for the store switcher.
-     *
-     * The switcher sets the "Store" request header, which is how Magento's
-     * GraphQL layer selects a store view. Without it every query answers for
-     * the default view, which is the single most confusing thing about
-     * exploring a multi-store catalog.
+     * The endpoint is per store rather than global on purpose: store views can
+     * sit on different base URLs, and querying view B through view A's host
+     * gives you view A's data no matter what the Store header says.
      *
      * @return array<int, array<string, string>>
      */
@@ -108,9 +100,14 @@ class ExplorerConfig implements ArgumentInterface
             if (!$store->getId() || !$store->getIsActive()) {
                 continue;
             }
+            $base = $this->storeManager->getStore($store->getId())
+                ->getBaseUrl(UrlInterface::URL_TYPE_WEB);
+
             $options[] = [
+                'id' => (string)$store->getId(),
                 'code' => (string)$store->getCode(),
                 'label' => sprintf('%s (%s)', $store->getName(), $store->getCode()),
+                'endpoint' => rtrim($base, '/') . '/graphql',
             ];
         }
 
@@ -118,26 +115,88 @@ class ExplorerConfig implements ArgumentInterface
     }
 
     /**
+     * The store the page is currently showing.
+     *
+     * Follows the native Adminhtml store switcher, which reloads with a "store"
+     * request parameter, and falls back to the current store otherwise.
+     *
      * @return string
      */
-    public function getDefaultStoreCode(): string
+    public function getCurrentStoreCode(): string
     {
+        $requested = (int)$this->request->getParam('store');
         $options = $this->getStoreOptions();
+
+        if ($requested) {
+            foreach ($options as $option) {
+                if ((int)$option['id'] === $requested) {
+                    return $option['code'];
+                }
+            }
+        }
+
+        $current = (string)$this->storeManager->getStore()->getCode();
+        foreach ($options as $option) {
+            if ($option['code'] === $current) {
+                return $current;
+            }
+        }
 
         return $options[0]['code'] ?? 'default';
     }
 
     /**
-     * The whole client-side configuration, JSON encoded for a data attribute.
+     * Endpoint for the currently selected store view.
      *
      * @return string
      */
-    public function getJsonConfig(): string
+    public function getCurrentEndpoint(): string
     {
+        $code = $this->getCurrentStoreCode();
+        foreach ($this->getStoreOptions() as $option) {
+            if ($option['code'] === $code) {
+                return $option['endpoint'];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Whether the template may render a store switcher of its own.
+     *
+     * Always true in Adminhtml; on the public route it follows configuration,
+     * because a switcher enumerates every store code to whoever can reach it.
+     *
+     * @param bool $isAdmin
+     * @return bool
+     */
+    public function isStoreSwitchAllowed(bool $isAdmin = false): bool
+    {
+        return $isAdmin || $this->config->isStoreSwitchAllowed();
+    }
+
+    /**
+     * @param bool $isAdmin
+     * @return string
+     */
+    public function getJsonConfig(bool $isAdmin = false): string
+    {
+        $current = $this->getCurrentStoreCode();
+        $stores = $this->isStoreSwitchAllowed($isAdmin)
+            ? $this->getStoreOptions()
+            : array_values(array_filter(
+                $this->getStoreOptions(),
+                static function (array $option) use ($current): bool {
+                    return $option['code'] === $current;
+                }
+            ));
+
         return $this->json->serialize([
-            'endpoint' => $this->getEndpointUrl(),
-            'stores' => $this->getStoreOptions(),
-            'defaultStore' => $this->getDefaultStoreCode(),
+            'stores' => $stores,
+            'currentStore' => $current,
+            'endpoint' => $this->getCurrentEndpoint(),
+            'isAdmin' => $isAdmin,
         ]);
     }
 }

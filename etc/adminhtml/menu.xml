@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="BroCode_GraphQlExplorer::explorer"
-             title="GraphQL Explorer"
+             title="BroCode GraphQL Explorer"
              translate="title"
              module="BroCode_GraphQlExplorer"
              sortOrder="40"

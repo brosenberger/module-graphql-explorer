@@ -143,7 +143,7 @@ Off by default. When enabled it serves a `/graphql-explorer` route in the spirit
 of Magento's own `/swagger`, so an integrator can read the schema without an
 admin account.
 
-Configure under **Stores → Configuration → Services → GraphQL Explorer**:
+Configure under **Stores → Configuration → Services → BroCode GraphQL Explorer**:
 
 | Setting | Default | Notes |
 |---|---|---|

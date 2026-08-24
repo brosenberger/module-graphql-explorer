@@ -7,7 +7,7 @@
                 <resource id="Magento_Backend::system">
                     <resource id="Magento_Backend::tools">
                         <resource id="BroCode_GraphQlExplorer::explorer"
-                                  title="GraphQL Explorer"
+                                  title="BroCode GraphQL Explorer"
                                   translate="title"
                                   sortOrder="40"/>
                     </resource>

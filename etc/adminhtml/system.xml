@@ -4,7 +4,7 @@
     <system>
         <section id="brocode_graphqlexplorer" translate="label" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
-            <label>GraphQL Explorer</label>
+            <label>BroCode GraphQL Explorer</label>
             <tab>service</tab>
             <resource>BroCode_GraphQlExplorer::explorer</resource>
             <group id="frontend" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
